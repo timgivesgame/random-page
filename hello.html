@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Animated Webpage with Code Background</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #333;
+            font-family: monospace;
+            color: #ffffff;
+        }
+        .code-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            white-space: pre-wrap;
+            overflow: hidden;
+            opacity: 0.2;
+            z-index: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .circle {
+            position: absolute;
+            border-radius: 50%;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="code-background" id="code">
+        &lt;!DOCTYPE html&gt;
+        &lt;html lang="en"&gt;
+        &lt;head&gt;
+            &lt;meta charset="UTF-8"&gt;
+            &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+            &lt;title&gt;Random Animated Webpage&lt;/title&gt;
+            &lt;style&gt;
+                body {
+                    margin: 0;
+                    overflow: hidden;
+                    background-color: #333;
+                    font-family: monospace;
+                    color: #ffffff;
+                }
+                .circle {
+                    position: absolute;
+                    border-radius: 50%;
+                    z-index: 1;
+                }
+            &lt;/style&gt;
+        &lt;/head&gt;
+        &lt;body&gt;
+            &lt;script&gt;
+                const numCircles = 20;
+                const circles = [];
+
+                for (let i = 0; i &lt; numCircles; i++) {
+                    const circle = document.createElement('div');
+                    circle.classList.add('circle');
+                    circle.style.width = circle.style.height = `${Math.random() * 50 + 10}px`;
+                    circle.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                    circle.style.top = `${Math.random() * window.innerHeight}px`;
+                    circle.style.left = `${Math.random() * window.innerWidth}px`;
+                    circles.push({
+                        element: circle,
+                        speedX: Math.random() * 4 - 2,
+                        speedY: Math.random() * 4 - 2
+                    });
+                    document.body.appendChild(circle);
+                }
+
+                function animate() {
+                    circles.forEach(circle => {
+                        let x = parseFloat(circle.element.style.left);
+                        let y = parseFloat(circle.element.style.top);
+                        x += circle.speedX;
+                        y += circle.speedY;
+
+                        if (x <= 0 || x >= window.innerWidth - parseFloat(circle.element.style.width)) {
+                            circle.speedX *= -1;
+                        }
+                        if (y <= 0 || y >= window.innerHeight - parseFloat(circle.element.style.height)) {
+                            circle.speedY *= -1;
+                        }
+
+                        circle.element.style.left = `${x}px`;
+                        circle.element.style.top = `${y}px`;
+                    });
+                    requestAnimationFrame(animate);
+                }
+
+                animate();
+            &lt;/script&gt;
+        &lt;/body&gt;
+        &lt;/html&gt;
+    </div>
+
+    <script>
+        const numCircles = 20;
+        const circles = [];
+        const collisionSound = new Audio('collision.mp3'); // Make sure you have a funny sound file named 'collision.mp3'
+
+        // Create circles and add them to the body
+        for (let i = 0; i < numCircles; i++) {
+            const circle = document.createElement('div');
+            circle.classList.add('circle');
+            circle.style.width = circle.style.height = `${Math.random() * 50 + 10}px`;
+            circle.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+            circle.style.top = `${Math.random() * window.innerHeight}px`;
+            circle.style.left = `${Math.random() * window.innerWidth}px`;
+            circles.push({
+                element: circle,
+                speedX: Math.random() * 4 - 2,
+                speedY: Math.random() * 4 - 2
+            });
+            document.body.appendChild(circle);
+        }
+
+        function animate() {
+            circles.forEach(circle => {
+                let x = parseFloat(circle.element.style.left);
+                let y = parseFloat(circle.element.style.top);
+                x += circle.speedX;
+                y += circle.speedY;
+
+                // Bounce off walls and change color, size, speed
+                if (x <= 0 || x >= window.innerWidth - parseFloat(circle.element.style.width)) {
+                    circle.speedX *= -1;
+                    changeProperties(circle);
+                }
+                if (y <= 0 || y >= window.innerHeight - parseFloat(circle.element.style.height)) {
+                    circle.speedY *= -1;
+                    changeProperties(circle);
+                }
+
+                circle.element.style.left = `${x}px`;
+                circle.element.style.top = `${y}px`;
+            });
+            requestAnimationFrame(animate);
+        }
+
+        function changeProperties(circle) {
+            // Play collision sound
+            collisionSound.play();
+
+            // Change color
+            circle.element.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+
+            // Increase size
+            const newSize = parseFloat(circle.element.style.width) + 5;
+            circle.element.style.width = circle.element.style.height = `${newSize}px`;
+
+            // Increase speed
+            circle.speedX = (Math.random() * 4 - 2) * 1.2;
+            circle.speedY = (Math.random() * 4 - 2) * 1.2;
+        }
+
+        animate();
+    </script>
+</body>
+</html>
